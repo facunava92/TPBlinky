@@ -1,10 +1,10 @@
 /**
  ******************************************************************************
  * @file    main.c
- * @author  Ac6
- * @version V1.0
- * @date    01-December-2013
- * @brief   Default main function.
+ * @author  Facundo Navarro
+ * @version V1.1
+ * @date    06-08-2016
+ * @brief   Led con pulsador SIN interrupcion.
  ******************************************************************************
  */
 
@@ -45,10 +45,21 @@ int main(void) {
 	HAL_GPIO_Init(PUSH_PORT, &GPIOA_Init);
 
 
+	while (1)
+	{
+		int flag=0;
 
-	while (1) {
+		while (1)
+		{
+			if (HAL_GPIO_ReadPin(PUSH_PORT,PUSH_BUTTON ))
+		{
+			flag ++;
+			if (flag == 2)
+					flag = 0;
+		}
 
-		if (!HAL_GPIO_ReadPin(PUSH_PORT,PUSH_BUTTON ))
+
+		if (flag == 0)
 		{
 			HAL_GPIO_WritePin(LEDS_PORT, LED_AZUL | LED_ROJO | LED_NARANJA, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(LEDS_PORT, LED_VERDE, GPIO_PIN_SET);
@@ -79,6 +90,7 @@ int main(void) {
 			HAL_GPIO_WritePin(LEDS_PORT, LED_AZUL | LED_ROJO | LED_NARANJA, GPIO_PIN_RESET);
 			HAL_GPIO_WritePin(LEDS_PORT, LED_VERDE, GPIO_PIN_SET);
 			delay(0xFFFF);
+		}
 		}
 	}
 }
